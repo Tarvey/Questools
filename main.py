@@ -10,7 +10,7 @@ def sething(x):
     os.system(f"adb shell setprop debug.oculus.{x}")
     menu()
 class qtt:None
-qtt.version="b1.0"
+qtt.version="Build 2"
 qtt.loadDefault=True
 print(f"Welcome to questools!\n",
       f"Detecting \"commands\" folder")
@@ -25,15 +25,17 @@ if shutil.which("adb") == None:
     exit()
 else:
     print("adb detected.")
-devices = str(subprocess.check_output("adb devices", shell=True).rstrip()).replace('\\n', '\n ').replace('\\t', '\t').replace('b\'', '').replace('\'', '')
 
 def menu():
+    devices = str(subprocess.check_output("adb devices", shell=True).rstrip()).replace('\\n', '\n ').replace('\\t', '\t').replace('b\'', '').replace('\'', '')
+    
     print(f"Questools {qtt.version}, Python {sys.version} on {sys.platform}\n",
           devices,
           f"\n rR - Change the refresh rate (HZ) of your device.\n",
           f"tW - Change the texture width of your device.\n",
           f"tH - Change the texture height of your device.\n",
           f"pL - Change the GPU/CPU Level of your device.\n",
+          f"fC - Enable or disable chromatic aberration.\n"
           f"fRC - Set the capture HZ. (0 = Half, 1 = Full)")
     if theresCommands:
         print(" c - Commands")
@@ -56,6 +58,9 @@ def menu():
         case "fRC":
             z = input("fRC> ")
             sething(f"fullRateCapture {z}")
+        case "fC":
+            z = input("fC> ")
+            sething(f"forceChroma {z}")
         case "c":
             os.system("dir commands/")
             if os.path.isfile("commands/default.yml"):
@@ -77,6 +82,7 @@ def menu():
             sething(f"gpuLevel {pL}")
             sething(f"cpuLevel {pL}")
             sething(f"fullRateCapture {fRC}")
+            sething(f"forceChroma {fC}")
             menu()
         case "q":
             quit()
